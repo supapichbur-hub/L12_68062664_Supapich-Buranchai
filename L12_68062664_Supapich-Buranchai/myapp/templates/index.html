@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="hero-section">
+    <h1 class="display-4 fw-bold mb-3">ยินดีต้อนรับสู่ระบบจัดการข้อมูลประชากร</h1>
+    <p class="lead opacity-75">รายวิชา ICT12367 | ข้อมูลล่าสุด ณ วันที่ {{ now|date:"d F Y" }}</p>
+</div>
+
+<div class="glass-card p-4 p-md-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="card-title-modern m-0">
+            <i class="bi bi-people-fill me-2"></i>รายชื่อประชากรทั้งหมด
+        </h2>
+        <span class="badge bg-primary rounded-pill px-3 py-2">ทั้งหมด {{ all_person|length }} รายการ</span>
+    </div>
+
+    <div class="table-responsive table-container">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" class="ps-4">ID</th>
+                    <th scope="col">ชื่อ-นามสกุล</th>
+                    <th scope="col">อายุ (ปี)</th>
+                    <th scope="col">วันที่บันทึก</th>
+                    <th scope="col" class="text-center">จัดการ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for person in all_person %}
+                <tr>
+                    <td class="ps-4 fw-bold text-muted">#{{person.id}}</td>
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div class="rounded-circle bg-light d-flex align-items-center justify-content-center me-2" style="width: 32px; height: 32px;">
+                                <i class="bi bi-person text-primary"></i>
+                            </div>
+                            {{person.name}}
+                        </div>
+                    </td>
+                    <td><span class="badge bg-info-subtle text-info border border-info-subtle">{{person.age}}</span></td>
+                    <td>{{person.created_date|date:"d M Y"}}</td>
+                    <td class="text-center">
+                        <div class="btn-group">
+                            <a href="/edit/{{person.id}}/" class="btn btn-sm btn-outline-warning" title="แก้ไข">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <a href="/delete/{{person.id}}/" class="btn btn-sm btn-outline-danger" title="ลบ" onclick="return confirm('คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลของ {{person.name}}?')">
+                                <i class="bi bi-trash"></i>
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center py-5 text-muted">
+                        <i class="bi bi-inbox display-1 d-block mb-3 opacity-25"></i>
+                        ไม่มีข้อมูลประชากรในขณะนี้
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
